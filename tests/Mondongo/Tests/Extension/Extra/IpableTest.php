@@ -19,33 +19,30 @@
  * along with Mondongo. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * MondongoExtensionTimestampable.
- *
- * @package    Mondongo
- * @subpackage Extensions
- * @author     Pablo Díez Pascual <pablodip@gmail.com>
- */
-class MondongoExtensionTimestampable extends MondongoExtension
+namespace Mondongo\Tests\Extension\Extra;
+
+use Mondongo\Tests\TestCase;
+use Model\Document\Ipable;
+
+class IpableTest extends TestCase
 {
-  protected $options = array(
-    'created_field' => 'created_at',
-    'updated_field' => 'updated_at',
-  );
+    public function testIpable()
+    {
+        $_SERVER['REMOTE_ADDR'] = '192.168.0.1';
 
-  protected function setup($definition)
-  {
-    $definition->setField($this->options['created_field'], 'date');
-    $definition->setField($this->options['updated_field'], 'date');
-  }
+        $document = new Ipable();
+        $document->setField('value');
+        $document->save();
 
-  public function preInsert()
-  {
-    $this->getInvoker()->set($this->options['created_field'], new DateTime('now'));
-  }
+        $this->assertSame('192.168.0.1', $document->getCreatedFrom());
+        $this->assertNull($document->getUpdatedFrom());
 
-  public function preUpdate()
-  {
-    $this->getInvoker()->set($this->options['updated_field'], new DateTime('now'));
-  }
+        $_SERVER['REMOTE_ADDR'] = '192.168.0.100';
+
+        $document->setField(null);
+        $document->save();
+
+        $this->assertSame('192.168.0.100', $document->getUpdatedFrom());
+        $this->assertSame('192.168.0.1', $document->getCreatedFrom());
+    }
 }
