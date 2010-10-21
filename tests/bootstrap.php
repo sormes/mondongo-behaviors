@@ -64,6 +64,22 @@ $configClasses = array(
             )
         ),
     ),
+    'TranslationDocument' => array(
+        'fields' => array(
+            'title'     => 'string',
+            'body'      => 'string',
+            'date'      => 'date',
+            'is_active' => 'boolean',
+        ),
+        'extensions' => array(
+            array(
+                'class'   => 'Mondongo\Extension\Extra\Translation',
+                'options' => array(
+                    'fields' => array('title', 'body')
+                ),
+            ),
+        ),
+    ),
 );
 
 $mondator = new Mondator();
@@ -75,5 +91,6 @@ $mondator->setExtensions(array(
         'default_document_output'      => __DIR__.'/Model/Document',
         'default_repository_output'    => __DIR__.'/Model/Repository',
     )),
+    new Mondongo\Extension\DocumentFromToArray(),
 ));
 $mondator->process();
