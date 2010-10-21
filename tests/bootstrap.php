@@ -41,6 +41,19 @@ $configClasses = array(
             )
         ),
     ),
+    'Sluggable' => array(
+        'fields' => array(
+            'title' => 'string',
+        ),
+        'extensions' => array(
+            array(
+                'class'   => 'Mondongo\Extension\Extra\Sluggable',
+                'options' => array(
+                    'from_field_name' => 'title',
+                ),
+            )
+        ),
+    ),
     'Timestampable' => array(
         'fields' => array(
             'field' => 'string'
@@ -56,12 +69,11 @@ $configClasses = array(
 $mondator = new Mondator();
 $mondator->setConfigClasses($configClasses);
 $mondator->setExtensions(array(
-    new Mondongo\Extension\CoreStart(array(
+    new Mondongo\Extension\Core(array(
         'default_document_namespace'   => 'Model\Document',
         'default_repository_namespace' => 'Model\Repository',
         'default_document_output'      => __DIR__.'/Model/Document',
         'default_repository_output'    => __DIR__.'/Model/Repository',
     )),
-    new Mondongo\Extension\CoreEnd(),
 ));
 $mondator->process();
