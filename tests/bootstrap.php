@@ -21,7 +21,7 @@ use \Mondongo\Mondator\Mondator;
 use \Mondongo\Mondator\Output\Output;
 
 $configClasses = array(
-    'IdentifierAutoIncrement' => array(
+    'Model\Document\IdentifierAutoIncrement' => array(
         'fields' => array(
             'field' => 'string',
         ),
@@ -31,7 +31,7 @@ $configClasses = array(
             )
         ),
     ),
-    'Ipable' => array(
+    'Model\Document\Ipable' => array(
         'fields' => array(
             'field' => 'string',
         ),
@@ -41,7 +41,7 @@ $configClasses = array(
             )
         ),
     ),
-    'Sluggable' => array(
+    'Model\Document\Sluggable' => array(
         'fields' => array(
             'title' => 'string',
         ),
@@ -49,12 +49,12 @@ $configClasses = array(
             array(
                 'class'   => 'Mondongo\Extension\Extra\Sluggable',
                 'options' => array(
-                    'from_field_name' => 'title',
+                    'from_field' => 'title',
                 ),
             )
         ),
     ),
-    'Timestampable' => array(
+    'Model\Document\Timestampable' => array(
         'fields' => array(
             'field' => 'string'
         ),
@@ -64,7 +64,7 @@ $configClasses = array(
             )
         ),
     ),
-    'TranslationDocument' => array(
+    'Model\Document\TranslationDocument' => array(
         'fields' => array(
             'title'     => 'string',
             'body'      => 'string',
@@ -86,8 +86,6 @@ $mondator = new Mondator();
 $mondator->setConfigClasses($configClasses);
 $mondator->setExtensions(array(
     new Mondongo\Extension\Core(array(
-        'default_document_namespace'   => 'Model\Document',
-        'default_repository_namespace' => 'Model\Repository',
         'default_document_output'      => __DIR__.'/Model/Document',
         'default_repository_output'    => __DIR__.'/Model/Repository',
     )),

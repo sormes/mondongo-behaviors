@@ -39,10 +39,10 @@ class Timestampable extends Extension
     protected function setUp()
     {
         $this->addOptions(array(
-            'created_enabled'    => true,
-            'created_field_name' => 'created_at',
-            'updated_enabled'    => true,
-            'updated_field_name' => 'updated_at',
+            'created_enabled' => true,
+            'created_field'   => 'created_at',
+            'updated_enabled' => true,
+            'updated_field'   => 'updated_at',
         ));
     }
 
@@ -56,11 +56,11 @@ class Timestampable extends Extension
          */
         if ($this->getOption('created_enabled')) {
             // field
-            $fieldName = $this->getOption('created_field_name');
-            $this->configClass['fields'][$fieldName] = 'date';
+            $field = $this->getOption('created_field');
+            $this->configClass['fields'][$field] = 'date';
 
             // event
-            $fieldSetter = 'set'.Inflector::camelize($fieldName);
+            $fieldSetter = 'set'.Inflector::camelize($field);
 
             $method = new Method('protected', 'updateTimestampableCreated', '', <<<EOF
         \$this->$fieldSetter(new \DateTime());
@@ -76,11 +76,11 @@ EOF
          */
         if ($this->getOption('updated_enabled')) {
             // field
-            $fieldName = $this->getOption('updated_field_name');
-            $this->configClass['fields'][$fieldName] = 'date';
+            $field = $this->getOption('updated_field');
+            $this->configClass['fields'][$field] = 'date';
 
             // event
-            $fieldSetter = 'set'.Inflector::camelize($fieldName);
+            $fieldSetter = 'set'.Inflector::camelize($field);
 
             $method = new Method('protected', 'updateTimestampableUpdated', '', <<<EOF
         \$this->$fieldSetter(new \DateTime());

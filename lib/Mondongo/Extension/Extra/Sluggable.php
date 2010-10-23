@@ -38,13 +38,13 @@ class Sluggable extends Extension
      */
     protected function setUp()
     {
-        $this->addRequiredOption('from_field_name');
+        $this->addRequiredOption('from_field');
 
         $this->addOptions(array(
-            'slug_field_name' => 'slug',
-            'unique'          => true,
-            'update'          => false,
-            'builder'         => array('\Mondongo\Extension\Extra\Sluggable', 'slugify'),
+            'slug_field' => 'slug',
+            'unique'     => true,
+            'update'     => false,
+            'builder'    => array('\Mondongo\Extension\Extra\Sluggable', 'slugify'),
         ));
     }
 
@@ -54,21 +54,21 @@ class Sluggable extends Extension
     protected function doProcess()
     {
         // field
-        $slugFieldName = $this->getOption('slug_field_name');
-        $this->configClass['fields'][$slugFieldName] = 'string';
+        $slugField = $this->getOption('slug_field');
+        $this->configClass['fields'][$slugField] = 'string';
 
         // index
         if ($this->getOption('unique')) {
             $this->configClass['indexes'][] = array(
-                'keys'    => array($slugFieldName => 1),
+                'keys'    => array($slugField => 1),
                 'options' => array('unique' => 1),
             );
         }
 
         // update slug
-        $fromFieldName = $this->getOption('from_field_name');
-        $fromFieldNameCamelized = Inflector::camelize($fromFieldName);
-        $slugFieldNameCamelized = Inflector::camelize($slugFieldName);
+        $fromField = $this->getOption('from_field');
+        $fromFieldCamelized = Inflector::camelize($fromField);
+        $slugFieldCamelized = Inflector::camelize($slugField);
         $builder = var_export($this->getOption('builder'), true);
 
         $uniqueCode = '';
@@ -77,9 +77,9 @@ class Sluggable extends Extension
         \$similarSlugs = array();
         foreach (\$this->getRepository()
             ->getCollection()
-            ->find(array('$slugFieldName' => new \MongoRegex('/^'.\$slug.'/')))
+            ->find(array('$slugField' => new \MongoRegex('/^'.\$slug.'/')))
         as \$result) {
-            \$similarSlugs[] = \$result['$slugFieldName'];
+            \$similarSlugs[] = \$result['$slugField'];
         }
 
         \$i = 1;
@@ -90,11 +90,11 @@ EOF;
         }
 
         $method = new Method('protected', 'updateSluggableSlug', '', <<<EOF
-        \$slug = \$proposal = call_user_func($builder, \$this->get$fromFieldNameCamelized());
+        \$slug = \$proposal = call_user_func($builder, \$this->get$fromFieldCamelized());
 
 $uniqueCode
 
-        \$this->set$slugFieldNameCamelized(\$slug);
+        \$this->set$slugFieldCamelized(\$slug);
 EOF
         );
         $this->definitions['document_base']->addMethod($method);

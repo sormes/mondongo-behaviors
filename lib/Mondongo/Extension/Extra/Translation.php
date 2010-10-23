@@ -60,31 +60,29 @@ class Translation extends Extension
         );
 
         $configClassFields = $this->configClass['fields'];
-        foreach ($this->getOption('fields') as $fieldName) {
-            if (!isset($configClassFields[$fieldName])) {
-                throw new \RuntimeException(sprintf('The field "%s" of the class "%s" does not exists.', $fieldName, $this->className));
+        foreach ($this->getOption('fields') as $field) {
+            if (!isset($configClassFields[$field])) {
+                throw new \RuntimeException(sprintf('The field "%s" of the class "%s" does not exists.', $field, $this->class));
             }
-            $translationConfigClass['fields'][$fieldName] = $configClassFields[$fieldName];
+            $translationConfigClass['fields'][$field] = $configClassFields[$field];
 
-            unset($configClassFields[$fieldName]);
+            unset($configClassFields[$field]);
         }
         $this->configClass['fields'] = $configClassFields;
 
-        $this->newConfigClasses[$this->className.'Translation'] = $translationConfigClass;
+        $this->newConfigClasses[$this->class.'Translation'] = $translationConfigClass;
     }
 
     protected function processTranslationEmbedded()
     {
         $this->configClass['embeddeds']['translations'] = array(
-            'class' => $this->definitions['document']->getFullClass().'Translation',
+            'class' => $this->definitions['document']->getClass().'Translation',
             'type'  => 'many',
         );
     }
 
     protected function processTranslationMethod()
     {
-        $fullClass = $this->definitions['document']->getFullClass();
-
         $method = new Method('public', 'translation', '$locale', <<<EOF
         foreach (\$this->getTranslations() as \$translation) {
             if (\$translation->getLocale() == \$locale) {
@@ -92,7 +90,7 @@ class Translation extends Extension
             }
         }
 
-        \$translation = new \\{$fullClass}Translation();
+        \$translation = new \\{$this->class}Translation();
         \$translation->setLocale(\$locale);
 
         \$this->getTranslations()->add(\$translation);
@@ -106,7 +104,7 @@ EOF
      *
      * @param string \$locale The locale.
      *
-     * @return {$this->className}Translation The translation document embedded.
+     * @return {$this->class}Translation The translation document embedded.
      */
 EOF
         );

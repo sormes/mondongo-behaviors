@@ -39,7 +39,7 @@ class IdentifierAutoIncrement extends Extension
     protected function setUp()
     {
         $this->addOptions(array(
-            'field_name' => 'identifier',
+            'field' => 'identifier',
         ));
     }
 
@@ -48,30 +48,30 @@ class IdentifierAutoIncrement extends Extension
      */
     protected function doProcess()
     {
-        $fieldName = $this->getOption('field_name');
+        $field = $this->getOption('field');
 
         // field
-        $this->configClass['fields'][$fieldName] = 'integer';
+        $this->configClass['fields'][$field] = 'integer';
 
         // index
         $this->configClass['indexes'][] = array(
-            'keys'    => array($fieldName => 1),
+            'keys'    => array($field => 1),
             'options' => array('unique' => 1),
         );
 
         // event
-        $setter = 'set'.Inflector::camelize($fieldName);
+        $setter = 'set'.Inflector::camelize($field);
 
         $method = new Method('protected', 'updateIdentifierAutoIncrement', '', <<<EOF
         \$last = \$this->getRepository()
             ->getCollection()
-            ->find(array(), array('$fieldName' => 1))
-            ->sort(array('$fieldName' => -1))
+            ->find(array(), array('$field' => 1))
+            ->sort(array('$field' => -1))
             ->limit(1)
             ->getNext()
         ;
 
-        \$identifier = null !== \$last ? \$last['$fieldName'] + 1 : 1;
+        \$identifier = null !== \$last ? \$last['$field'] + 1 : 1;
 
         \$this->$setter(\$identifier);
 EOF

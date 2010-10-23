@@ -39,11 +39,11 @@ class Ipable extends Extension
     protected function setUp()
     {
         $this->addOptions(array(
-            'created_enabled'    => true,
-            'created_field_name' => 'created_from',
-            'updated_enabled'    => true,
-            'updated_field_name' => 'updated_from',
-            'get_ip_callable'    => array('\Mondongo\Extension\Extra\Ipable', 'getIp'),
+            'created_enabled' => true,
+            'created_field'   => 'created_from',
+            'updated_enabled' => true,
+            'updated_field'   => 'updated_from',
+            'get_ip_callable' => array('\Mondongo\Extension\Extra\Ipable', 'getIp'),
         ));
     }
 
@@ -57,11 +57,11 @@ class Ipable extends Extension
          */
         if ($this->getOption('created_enabled')) {
             // field
-            $fieldName = $this->getOption('created_field_name');
-            $this->configClass['fields'][$fieldName] = 'string';
+            $field = $this->getOption('created_field');
+            $this->configClass['fields'][$field] = 'string';
 
             // event
-            $fieldSetter   = 'set'.Inflector::camelize($fieldName);
+            $fieldSetter   = 'set'.Inflector::camelize($field);
             $getIpCallable = var_export($this->getOption('get_ip_callable'), true);
 
             $method = new Method('protected', 'updateIpableCreated', '', <<<EOF
@@ -78,11 +78,11 @@ EOF
          */
         if ($this->getOption('updated_enabled')) {
             // field
-            $fieldName = $this->getOption('updated_field_name');
-            $this->configClass['fields'][$fieldName] = 'string';
+            $field = $this->getOption('updated_field');
+            $this->configClass['fields'][$field] = 'string';
 
             // event
-            $fieldSetter   = 'set'.Inflector::camelize($fieldName);
+            $fieldSetter   = 'set'.Inflector::camelize($field);
             $getIpCallable = var_export($this->getOption('get_ip_callable'), true);
 
             $method = new Method('protected', 'updateIpableUpdated', '', <<<EOF
