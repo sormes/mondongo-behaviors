@@ -19,7 +19,7 @@
  * along with Mondongo. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Mondongo\Extension\Extra;
+namespace Mondongo\Behavior;
 
 use Mondongo\Mondator\Definition\Method;
 use Mondongo\Mondator\Extension;
@@ -43,7 +43,7 @@ class Ipable extends Extension
             'created_field'   => 'created_from',
             'updated_enabled' => true,
             'updated_field'   => 'updated_from',
-            'get_ip_callable' => array('\Mondongo\Extension\Extra\Ipable', 'getIp'),
+            'get_ip_callable' => array('\Mondongo\Behavior\Ipable', 'getIp'),
         ));
     }
 

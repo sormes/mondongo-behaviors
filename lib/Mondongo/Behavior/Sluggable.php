@@ -19,7 +19,7 @@
  * along with Mondongo. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Mondongo\Extension\Extra;
+namespace Mondongo\Behavior;
 
 use Mondongo\Mondator\Definition\Method;
 use Mondongo\Mondator\Extension;
@@ -44,7 +44,7 @@ class Sluggable extends Extension
             'slug_field' => 'slug',
             'unique'     => true,
             'update'     => false,
-            'builder'    => array('\Mondongo\Extension\Extra\Sluggable', 'slugify'),
+            'builder'    => array('\Mondongo\Behavior\Sluggable', 'slugify'),
         ));
     }
 

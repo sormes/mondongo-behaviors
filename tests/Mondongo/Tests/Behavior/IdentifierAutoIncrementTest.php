@@ -19,27 +19,37 @@
  * along with Mondongo. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Mondongo\Tests\Extension\Extra;
+namespace Mondongo\Tests\Behavior;
 
 use Mondongo\Tests\TestCase;
-use Model\Document\Sluggable;
+use Model\IdentifierAutoIncrement;
 
-class SluggableTest extends TestCase
+class IdentifierAutoIncrementTest extends TestCase
 {
-    public function testSluggable()
+    public function testIdentifierAutoIncrement()
     {
         $documents = array();
 
-        $documents[1] = new Sluggable();
-        $documents[1]->setTitle(' Testing Sluggable Extensión ');
+        $documents[1] = new IdentifierAutoIncrement();
+        $documents[1]->setField('value');
         $documents[1]->save();
 
-        $this->assertSame('testing-sluggable-extensi-n', $documents[1]->getSlug());
+        $this->assertSame(1, $documents[1]->getIdentifier());
 
-        $documents[2] = new Sluggable();
-        $documents[2]->setTitle(' Testing Sluggable Extensión ');
-        $documents[2]->save();
+        $documents[1]->setField(null);
+        $documents[1]->save();
 
-        $this->assertSame('testing-sluggable-extensi-n-2', $documents[2]->getSlug());
+        $this->assertSame(1, $documents[1]->getIdentifier());
+
+        for ($i = 2; $i <= 10; $i++) {
+            $documents[$i] = $document = new IdentifierAutoIncrement();
+            $document->setField('value');
+            $document->save();
+        }
+
+        foreach ($documents as $identifier => $document) {
+            $d = $document->getRepository()->findOneById($document->getId());
+            $this->assertSame($identifier, $d->getIdentifier());
+        }
     }
 }

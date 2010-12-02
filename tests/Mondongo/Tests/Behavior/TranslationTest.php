@@ -19,10 +19,10 @@
  * along with Mondongo. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Mondongo\Tests\Extension\Extra;
+namespace Mondongo\Tests\Behavior;
 
 use Mondongo\Tests\TestCase;
-use Model\Document\TranslationDocument;
+use Model\TranslationDocument;
 
 class TranslationTest extends TestCase
 {

@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Mondongo\\Tests'            => __DIR__,
-    'Mondongo\\Extension\\Extra' => __DIR__.'/../lib',
-    'Mondongo'                   => $mondongoLibDir,
-    'Model'                      => __DIR__,
+    'Mondongo\Tests'    => __DIR__,
+    'Mondongo\Behavior' => __DIR__.'/../lib',
+    'Mondongo'          => $mondongoLibDir,
+    'Model'             => __DIR__,
 ));
 $loader->register();
 
@@ -21,50 +21,50 @@ use \Mondongo\Mondator\Mondator;
 use \Mondongo\Mondator\Output\Output;
 
 $configClasses = array(
-    'Model\Document\IdentifierAutoIncrement' => array(
+    'Model\IdentifierAutoIncrement' => array(
         'fields' => array(
             'field' => 'string',
         ),
         'extensions' => array(
             array(
-                'class' => 'Mondongo\Extension\Extra\IdentifierAutoIncrement',
+                'class' => 'Mondongo\Behavior\IdentifierAutoIncrement',
             )
         ),
     ),
-    'Model\Document\Ipable' => array(
+    'Model\Ipable' => array(
         'fields' => array(
             'field' => 'string',
         ),
         'extensions' => array(
             array(
-                'class' => 'Mondongo\Extension\Extra\Ipable',
+                'class' => 'Mondongo\Behavior\Ipable',
             )
         ),
     ),
-    'Model\Document\Sluggable' => array(
+    'Model\Sluggable' => array(
         'fields' => array(
             'title' => 'string',
         ),
         'extensions' => array(
             array(
-                'class'   => 'Mondongo\Extension\Extra\Sluggable',
+                'class'   => 'Mondongo\Behavior\Sluggable',
                 'options' => array(
                     'from_field' => 'title',
                 ),
             )
         ),
     ),
-    'Model\Document\Timestampable' => array(
+    'Model\Timestampable' => array(
         'fields' => array(
             'field' => 'string'
         ),
         'extensions' => array(
             array(
-                'class' => 'Mondongo\Extension\Extra\Timestampable',
+                'class' => 'Mondongo\Behavior\Timestampable',
             )
         ),
     ),
-    'Model\Document\TranslationDocument' => array(
+    'Model\TranslationDocument' => array(
         'fields' => array(
             'title'     => 'string',
             'body'      => 'string',
@@ -73,7 +73,7 @@ $configClasses = array(
         ),
         'extensions' => array(
             array(
-                'class'   => 'Mondongo\Extension\Extra\Translation',
+                'class'   => 'Mondongo\Behavior\Translation',
                 'options' => array(
                     'fields' => array('title', 'body')
                 ),
@@ -86,8 +86,7 @@ $mondator = new Mondator();
 $mondator->setConfigClasses($configClasses);
 $mondator->setExtensions(array(
     new Mondongo\Extension\Core(array(
-        'default_document_output'      => __DIR__.'/Model/Document',
-        'default_repository_output'    => __DIR__.'/Model/Repository',
+        'default_output' => __DIR__.'/Model',
     )),
     new Mondongo\Extension\DocumentFromToArray(),
 ));

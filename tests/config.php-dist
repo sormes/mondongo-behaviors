@@ -1,0 +1,5 @@
+<?php
+
+return array(
+    'mondongo_lib_dir' => '/path/to/mondongo/lib',
+);

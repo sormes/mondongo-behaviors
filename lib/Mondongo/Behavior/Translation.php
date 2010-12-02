@@ -19,7 +19,7 @@
  * along with Mondongo. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Mondongo\Extension\Extra;
+namespace Mondongo\Behavior;
 
 use Mondongo\Mondator\Definition\Method;
 use Mondongo\Mondator\Extension;

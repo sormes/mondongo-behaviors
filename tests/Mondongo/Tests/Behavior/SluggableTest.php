@@ -19,30 +19,27 @@
  * along with Mondongo. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Mondongo\Tests\Extension\Extra;
+namespace Mondongo\Tests\Behavior;
 
 use Mondongo\Tests\TestCase;
-use Model\Document\Ipable;
+use Model\Sluggable;
 
-class IpableTest extends TestCase
+class SluggableTest extends TestCase
 {
-    public function testIpable()
+    public function testSluggable()
     {
-        $_SERVER['REMOTE_ADDR'] = '192.168.0.1';
+        $documents = array();
 
-        $document = new Ipable();
-        $document->setField('value');
-        $document->save();
+        $documents[1] = new Sluggable();
+        $documents[1]->setTitle(' Testing Sluggable Extensión ');
+        $documents[1]->save();
 
-        $this->assertSame('192.168.0.1', $document->getCreatedFrom());
-        $this->assertNull($document->getUpdatedFrom());
+        $this->assertSame('testing-sluggable-extensi-n', $documents[1]->getSlug());
 
-        $_SERVER['REMOTE_ADDR'] = '192.168.0.100';
+        $documents[2] = new Sluggable();
+        $documents[2]->setTitle(' Testing Sluggable Extensión ');
+        $documents[2]->save();
 
-        $document->setField(null);
-        $document->save();
-
-        $this->assertSame('192.168.0.100', $document->getUpdatedFrom());
-        $this->assertSame('192.168.0.1', $document->getCreatedFrom());
+        $this->assertSame('testing-sluggable-extensi-n-2', $documents[2]->getSlug());
     }
 }
