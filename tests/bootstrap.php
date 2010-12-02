@@ -25,7 +25,7 @@ $configClasses = array(
         'fields' => array(
             'field' => 'string',
         ),
-        'extensions' => array(
+        'behaviors' => array(
             array(
                 'class' => 'Mondongo\Behavior\IdentifierAutoIncrement',
             )
@@ -35,7 +35,7 @@ $configClasses = array(
         'fields' => array(
             'field' => 'string',
         ),
-        'extensions' => array(
+        'behaviors' => array(
             array(
                 'class' => 'Mondongo\Behavior\Ipable',
             )
@@ -45,7 +45,7 @@ $configClasses = array(
         'fields' => array(
             'title' => 'string',
         ),
-        'extensions' => array(
+        'behaviors' => array(
             array(
                 'class'   => 'Mondongo\Behavior\Sluggable',
                 'options' => array(
@@ -58,7 +58,7 @@ $configClasses = array(
         'fields' => array(
             'field' => 'string'
         ),
-        'extensions' => array(
+        'behaviors' => array(
             array(
                 'class' => 'Mondongo\Behavior\Timestampable',
             )
@@ -71,7 +71,7 @@ $configClasses = array(
             'date'      => 'date',
             'is_active' => 'boolean',
         ),
-        'extensions' => array(
+        'behaviors' => array(
             array(
                 'class'   => 'Mondongo\Behavior\Translation',
                 'options' => array(
