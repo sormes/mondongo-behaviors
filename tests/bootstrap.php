@@ -1,6 +1,6 @@
 <?php
 
-$mondongoLibDir = '/apache/mondongo/lib';
+$mondongoLibDir = __DIR__.'/../../mondongo/lib';
 
 // autoloader
 require($mondongoLibDir.'/vendor/symfony/src/Symfony/Component/HttpFoundation/UniversalClassLoader.php');
