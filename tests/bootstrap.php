@@ -1,6 +1,6 @@
 <?php
 
-$mondongoLibDir = '/apache/mondongo/lib';
+$mondongoLibDir = __DIR__.'/../../mondongo/lib';
 
 // autoloader
 require($mondongoLibDir.'/vendor/symfony/src/Symfony/Component/HttpFoundation/UniversalClassLoader.php');
@@ -80,6 +80,24 @@ $configClasses = array(
             ),
         ),
     ),
+    'Model\Cacheable' => array(
+        'fields' => array(
+            'field' => 'string'
+        ),
+        'behaviors' => array(
+            array(
+                'class' => 'Mondongo\Behavior\Cacheable',
+                'options' => array(
+                    'from_fields' => array(
+                        array(
+                            'name' => 'field',
+                            'function' => 'cacheable_function'
+                        )
+                    )
+                 )
+            )
+        )
+    )
 );
 
 $mondator = new Mondator();
